@@ -2,7 +2,9 @@ package org.velezreyes.quiz.question6;
 
 public class KarenTea implements Drink {
 
-    /* The price in cents */
+    /**
+     * The price in cents
+     */
     private int price = 100;
 
     public int getPrice() {

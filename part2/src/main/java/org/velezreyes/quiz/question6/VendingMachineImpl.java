@@ -1,26 +1,26 @@
 package org.velezreyes.quiz.question6;
 
 /*
- * Considering that there was a getInstance method in the provided code, 
+ * Considering that there is a getInstance method in the provided code, 
  * this is the singleton pattern
 */
 public class VendingMachineImpl implements VendingMachine {
 
   private static VendingMachineImpl instance;
-  /*
-   * The current quarter quantity is used to keep track of the quarters inserted
+  /**
+   * The current quantity is used to keep track of the cents inserted
    * in the current transaction. It is reduce based on the price of the drink
    */
-  private int currentQuarterQuantity;
-  /*
-   * The quarter quantity keeps track of the quarters inserted in the machine
-   * during its lifetime. It is never reset
+  private int currentQuantity;
+  /**
+   * The total cents keeps track of the cents inserted in the machine
+   * during its lifetime.
    */
-  private int quarterQuantity;
+  private int totalCents;
 
-  /*
+  /**
    * I will use a predefined list instead of allowing dynamic creation of
-   * drinks. Also. I'm ignoring the name validation for simplicity
+   * drinks. Also, I'm ignoring unique name validation for simplicity
    */
   private Drink[] drinks = {
       new ScottCola(),
@@ -28,7 +28,8 @@ public class VendingMachineImpl implements VendingMachine {
   };
 
   private VendingMachineImpl() {
-    this.quarterQuantity = 0;
+    this.totalCents = 0;
+    this.currentQuantity = 0;
   }
 
   public static VendingMachine getInstance() {
@@ -40,8 +41,7 @@ public class VendingMachineImpl implements VendingMachine {
 
   @Override
   public void insertQuarter() {
-    this.quarterQuantity += 25;
-    this.currentQuarterQuantity += 25;
+    this.currentQuantity += 25;
   }
 
   @Override
@@ -60,20 +60,20 @@ public class VendingMachineImpl implements VendingMachine {
       throw new UnknownDrinkException();
     }
 
-    if (drink.getPrice() > this.currentQuarterQuantity) {
+    if (drink.getPrice() > this.currentQuantity) {
       throw new NotEnoughMoneyException();
     }
 
-    // decrease the current quarter quantity
-    this.currentQuarterQuantity -= drink.getPrice();
-    // increase the quarter quantity using the price of the drink
-    this.quarterQuantity += drink.getPrice();
+    // decrease the current cents quantity
+    this.currentQuantity -= drink.getPrice();
+    // increase the total cents quantity of the machine
+    this.totalCents += drink.getPrice();
 
     return drink;
   }
 
-  public int getQuarterQuantity() {
-    return this.quarterQuantity;
+  public int getTotalCents() {
+    return this.totalCents;
   }
 
 }
